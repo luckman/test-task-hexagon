@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 import static org.testng.Assert.assertEquals;
 
 public class ApiTest {
-    private UserClient userClient = new UserClient();       // can also be singleton
+    private final UserClient userClient = new UserClient();       // can also be singleton
 
     @Test
     public void getAllUsersTest() {
         Response response = userClient.getAllAsResponse();
-        assertEquals(200, response.code(), "Status code is not correct");
+        assertEquals(response.code(), 200, "Status code is not correct");
         GetAllUsersResult getAllUsersResult = Utils.extractFromResponse(response, GetAllUsersResult.class);
-        assertEquals(12, getAllUsersResult.getTotal(), "Wrong total number of users");
+        assertEquals(getAllUsersResult.getTotal(), 12, "Wrong total number of users");
     }
 
     @Test
@@ -47,18 +47,18 @@ public class ApiTest {
                     .map(User::getEmail)
                     .collect(Collectors.toSet());
 
-            assertEquals(expectedUsersOnPage, usersOnPage.size(),
+            assertEquals(usersOnPage.size(), expectedUsersOnPage,
                     "Number of users on page " + page + " is incorrect");
-            assertEquals(expectedUsersOnPage, idsOnPage.size(),
+            assertEquals(idsOnPage.size(), expectedUsersOnPage,
                     "Amount of unique ids on page " + page + " is incorrect");
-            assertEquals(expectedUsersOnPage, emailsOnPage.size(),
+            assertEquals(emailsOnPage.size(), expectedUsersOnPage,
                     "Amount of unique emails on page " + page + " is incorrect");
 
             ids.addAll(idsOnPage);
             emails.addAll(emailsOnPage);
         }
-        assertEquals(totalUsers, ids.size(), "Users across all pages are not unique");
-        assertEquals(totalUsers, emails.size(), "Emails across all pages are not unique");
+        assertEquals(ids.size(), totalUsers, "Users across all pages are not unique");
+        assertEquals(emails.size(), totalUsers, "Emails across all pages are not unique");
     }
 
     @Test

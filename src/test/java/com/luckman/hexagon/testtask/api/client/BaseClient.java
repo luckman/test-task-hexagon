@@ -4,7 +4,7 @@ import okhttp3.Response;
 
 /**
  *
- * @param <D> - dto class
+ * @param <D> - dto class. Currently it is not used, because we have only getAll() scenario.
  * @param <DA> - set of dto classes (for example, in getAll response)
  */
 public class BaseClient<D, DA> {
